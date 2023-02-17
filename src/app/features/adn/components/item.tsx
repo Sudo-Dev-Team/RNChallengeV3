@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import React, {useEffect} from 'react';
+import {View} from 'react-native';
 
 import Animated, {
+  Easing,
   interpolate,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -12,13 +13,14 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { getRandomColor } from '../constants';
-import { styles } from '../styles';
-import { ItemProps } from '../type';
+import {getRandomColor} from '../constants';
+import {styles} from '../styles';
+import {ItemProps} from '../type';
 
-export const Item = ({ index }: ItemProps) => {
+export const Item = ({index}: ItemProps) => {
   // state
   const progress = useSharedValue(0);
+  const progressRotate = useSharedValue(0);
   const width = useDerivedValue(() =>
     interpolate(progress.value, [0, 0.5, 1], [90, 0, 90]),
   );
@@ -33,17 +35,27 @@ export const Item = ({ index }: ItemProps) => {
 
   const rightDotZIndex = useSharedValue(1);
 
+  const rotateLeft = useDerivedValue(() =>
+    interpolate(progressRotate.value, [0, 1], [0, 360]),
+  );
+
   // style
   const lineStyle = useAnimatedStyle(() => ({
     width: width.value,
   }));
 
   const leftDotStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateXLeftDot.value }],
+    transform: [
+      {translateX: translateXLeftDot.value},
+      {rotate: `${rotateLeft.value}deg`},
+    ],
   }));
 
   const rightDotStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateXRightDot.value }],
+    transform: [
+      {translateX: translateXRightDot.value},
+      {rotate: `${rotateLeft.value}deg`},
+    ],
     zIndex: rightDotZIndex.value,
   }));
 
@@ -66,7 +78,15 @@ export const Item = ({ index }: ItemProps) => {
   useEffect(() => {
     progress.value = withDelay(
       index * 100,
-      withRepeat(withTiming(1, { duration: 600 }), -1, true),
+      withRepeat(withTiming(1, {duration: 600}), -1, true),
+    );
+    progressRotate.value = withDelay(
+      index * (Math.random() * 100),
+      withRepeat(
+        withTiming(1, {duration: 600, easing: Easing.linear}),
+        -1,
+        false,
+      ),
     );
   }, []);
 
@@ -78,18 +98,24 @@ export const Item = ({ index }: ItemProps) => {
         style={[
           styles.dot,
           styles.leftDot,
-          { backgroundColor: getRandomColor() },
+          {backgroundColor: getRandomColor()},
           leftDotStyle,
-        ]}
-      />
+        ]}>
+        <View style={styles.wrapTick}>
+          <View style={styles.tick} />
+        </View>
+      </Animated.View>
       <Animated.View
         style={[
           styles.dot,
           styles.rightDot,
-          { backgroundColor: getRandomColor() },
+          {backgroundColor: getRandomColor()},
           rightDotStyle,
-        ]}
-      />
+        ]}>
+        <View style={styles.wrapTick}>
+          <View style={styles.tick} />
+        </View>
+      </Animated.View>
     </View>
   );
 };

@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#c8d6e5',
+    backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -33,5 +33,16 @@ export const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
     borderColor: 'gray',
+  },
+  wrapTick: {
+    width: 30,
+    height: 5,
+    position: 'absolute',
+  },
+  tick: {
+    width: 2,
+    height: 2,
+    borderRadius: 2,
+    backgroundColor: '#fff',
   },
 });
