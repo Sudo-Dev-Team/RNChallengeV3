@@ -30,6 +30,8 @@ export const OriginImage = ({progress}: OriginImageProps) => {
           duration: 5800,
           easing: Easing.linear,
         });
+      } else {
+        progressBackdrop.value = 0;
       }
     },
   );

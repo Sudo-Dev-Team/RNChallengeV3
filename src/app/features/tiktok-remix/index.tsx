@@ -18,14 +18,18 @@ export const TiktokRemix = () => {
   const progress = useSharedValue(0);
   const scaleMask = useSharedValue(1.2);
   const maskRef = useRef<AnimatedMask>(null);
-  // effect
-  useEffect(() => {
-    maskRef.current?.run();
-  }, []);
+
   // render
   return (
     <View style={styles.root}>
       <Video
+        onProgress={v => {
+          if (v.currentTime === 0) {
+            progress.value = 0;
+            maskRef.current?.run();
+          }
+        }}
+        repeat
         paused={false}
         playInBackground
         source={require('./files/tiktok.mp4')}
