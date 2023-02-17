@@ -1,0 +1,14 @@
+diff --git a/node_modules/@react-native-community/masked-view/types/index.d.ts b/node_modules/@react-native-community/masked-view/types/index.d.ts
+index 7aaf173..f093aed 100644
+--- a/node_modules/@react-native-community/masked-view/types/index.d.ts
++++ b/node_modules/@react-native-community/masked-view/types/index.d.ts
+@@ -10,8 +10,5 @@ interface MaskedViewProps extends ReactNative.ViewProps {
+  * @see https://github.com/react-native-community/react-native-masked-view
+  */
+ declare class MaskedViewComponent extends React.Component<MaskedViewProps> {}
+-declare const MaskedViewBase: ReactNative.Constructor<
+-  ReactNative.NativeMethodsMixin
+-> &
+-  typeof MaskedViewComponent;
++declare const MaskedViewBase:typeof MaskedViewComponent;
+ export default class MaskedView extends MaskedViewBase {}
