@@ -1,16 +1,16 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import {ScrollView, View} from 'react-native';
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import { ItemFunction } from './components/item-function';
+import {ItemFunction} from './components/item-function';
 
-import { navigate } from '../../navigation/navigation-service';
-import { APP_SCREEN, RootStackParamList } from '../../navigation/screen-type';
+import {navigate} from '../../navigation/navigation-service';
+import {APP_SCREEN, RootStackParamList} from '../../navigation/screen-type';
 
 export const Home = () => {
   // state
-  const { bottom } = useSafeAreaInsets();
+  const {bottom} = useSafeAreaInsets();
   // func
   const handleNavigate = (screen: keyof RootStackParamList) => {
     return () => {
@@ -90,7 +90,11 @@ export const Home = () => {
         onPress={handleNavigate(APP_SCREEN.TIKTOK_REMIX)}
       />
       <ItemFunction text="ADN" onPress={handleNavigate(APP_SCREEN.ADN)} />
-      <View style={{ height: bottom + 10 }} />
+      <ItemFunction
+        text="Dark Light Mode"
+        onPress={handleNavigate(APP_SCREEN.DARK_LIGHT_MODE)}
+      />
+      <View style={{height: bottom + 10}} />
     </ScrollView>
   );
 };

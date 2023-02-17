@@ -18,6 +18,7 @@ export enum APP_SCREEN {
   PIE_CHART = 'PIE_CHART',
   TIKTOK_REMIX = 'TIKTOK_REMIX',
   ADN = 'ADN',
+  DARK_LIGHT_MODE = 'DARK_LIGHT_MODE',
 }
 
 export type RootStackParamList = {
@@ -40,4 +41,5 @@ export type RootStackParamList = {
   [APP_SCREEN.PIE_CHART]: undefined;
   [APP_SCREEN.TIKTOK_REMIX]: undefined;
   [APP_SCREEN.ADN]: undefined;
+  [APP_SCREEN.DARK_LIGHT_MODE]: undefined;
 };
