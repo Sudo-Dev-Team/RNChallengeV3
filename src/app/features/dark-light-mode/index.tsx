@@ -47,7 +47,7 @@ export const DarkLightMode = () => {
     setIsDark(v => !v);
   };
   const renderLight = useCallback((_: number, i: number) => {
-    return <Light progress={progress} rotateDeg={(360 / 10) * i} />;
+    return <Light key={i} progress={progress} rotateDeg={(360 / 10) * i} />;
   }, []);
 
   // style
