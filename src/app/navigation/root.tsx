@@ -27,6 +27,7 @@ import {SwipeSort} from '../features/swipe-sort';
 import {TelegramLock} from '../features/telegram-lock';
 import {TiktokRemix} from '../features/tiktok-remix';
 import {DarkLightMode} from '../features/dark-light-mode';
+import {GridRotate} from '../features/grid-rotate';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -135,6 +136,11 @@ export const RootNavigation = () => {
           options={{title: 'Dark Light Mode'}}
           name={APP_SCREEN.DARK_LIGHT_MODE}
           component={DarkLightMode}
+        />
+        <RootStack.Screen
+          options={{title: 'Grid Rotate'}}
+          name={APP_SCREEN.GRID_ROTATE}
+          component={GridRotate}
         />
       </RootStack.Navigator>
     </NavigationContainer>

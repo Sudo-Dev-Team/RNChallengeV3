@@ -94,6 +94,10 @@ export const Home = () => {
         text="Dark Light Mode"
         onPress={handleNavigate(APP_SCREEN.DARK_LIGHT_MODE)}
       />
+      <ItemFunction
+        text="Grid Rotate"
+        onPress={handleNavigate(APP_SCREEN.GRID_ROTATE)}
+      />
       <View style={{height: bottom + 10}} />
     </ScrollView>
   );

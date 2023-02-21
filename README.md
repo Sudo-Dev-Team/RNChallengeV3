@@ -72,3 +72,7 @@
 ## Dark Light Mode
 
 <image src="./preview/darklight.gif"/>
+
+## Grid Rotate
+
+<image src="./preview/gridrotate.gif"/>
