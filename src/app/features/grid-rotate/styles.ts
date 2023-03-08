@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     height: 1000,
   },
   baseItem: {
+    position: 'absolute',
     borderRadius: 10,
     overflow: 'hidden',
     justifyContent: 'center',
@@ -18,8 +19,8 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,.4)',
   },
   row: {
-    justifyContent: 'center',
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   alignEnd: {
     alignItems: 'flex-end',

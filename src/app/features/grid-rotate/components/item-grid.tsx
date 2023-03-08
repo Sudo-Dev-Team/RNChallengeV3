@@ -6,7 +6,7 @@ import {useGridContext} from '../constant';
 import {styles} from '../styles';
 import {ItemGridProps} from '../type';
 
-export const ItemGrid = ({height, uri, width}: ItemGridProps) => {
+export const ItemGrid = ({height, uri, width, x = 0, y = 0}: ItemGridProps) => {
   // state
   const {rotate} = useGridContext();
 
@@ -16,8 +16,12 @@ export const ItemGrid = ({height, uri, width}: ItemGridProps) => {
 
   // render
   return (
-    <View style={[styles.baseItem, {width, height}]}>
-      <Animated.View style={[StyleSheet.absoluteFillObject, imageStyle]}>
+    <View
+      style={[
+        styles.baseItem,
+        {width, height, transform: [{translateX: x}, {translateY: y}]},
+      ]}>
+      <Animated.View style={[{width, height}, imageStyle]}>
         <FastImage
           style={[StyleSheet.absoluteFillObject]}
           resizeMode={'cover'}
