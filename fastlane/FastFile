@@ -1,0 +1,136 @@
+default_platform(:ios)
+
+
+before_all do |lane|
+      ANDROID_PROJECT_DIR = "android/"
+
+      
+      ANDROID_AAB_BUILD_PATH_DEFAULT = "../#{ANDROID_PROJECT_DIR}app/build/outputs/bundle/release/app-release.aab"
+      
+      ANDROID_APK_BUILD_PATH_DEFAULT = "../#{ANDROID_PROJECT_DIR}app/build/outputs/apk/release/app--release.apk"
+     
+      ANDROID_BUILD_FILE_NAME = "#{ENV['APP_DISPLAY_NAME']}-#{ENV['EXPORT_APP_ANDROID_NAME_SUFFIX']}"
+
+      ANDROID_APK_BUILD_PATH_UPLOAD = "#{ANDROID_PROJECT_DIR}app/build/outputs/apk/release/#{ANDROID_BUILD_FILE_NAME}-#{ENV['VERSION_NAME']}-#{ENV['VERSION_CODE']}.apk"
+
+      ANDROID_AAB_BUILD_PATH_UPLOAD = "#{ANDROID_PROJECT_DIR}app/build/outputs/bundle/release/#{ANDROID_BUILD_FILE_NAME}-#{ENV['VERSION_NAME']}-#{ENV['VERSION_CODE']}.aab"
+      
+      BUILD_IOS_FILENAME = "#{ENV['APP_DISPLAY_NAME']}-#{ENV['EXPORT_APP_IOS_NAME_SUFFIX']}-#{ENV['VERSION_NAME']}-#{ENV['VERSION_CODE']}"
+end
+
+
+platform :ios do
+
+  desc "Upload IPA to TestFlight"
+  private_lane :ios_upload_to_TF do
+    upload_to_testflight({
+      app_identifier: ENV['BUNDLE_IDENTIFIER'],
+      username: ENV['FASTLANE_USER']
+    })
+  end
+
+  desc "iOS remove build output file"
+  private_lane :clean_cache do
+    File.delete("../#{BUILD_IOS_FILENAME}.ipa") if File.exist?("../#{BUILD_IOS_FILENAME}.ipa")
+    File.delete("../#{BUILD_IOS_FILENAME}.app.dSYM.zip") if File.exist?("../#{BUILD_IOS_FILENAME}.app.dSYM.zip")
+  end
+
+  desc "IOS ipa"
+  private_lane :ios_build_ipa do
+    build_app(
+      workspace: "ios/#{ENV['APP_PLACEHOLDER_NAME']}.xcworkspace",
+      scheme: "#{ENV['APP_PLACEHOLDER_NAME']}-#{ENV['APP_ENV']}",
+      export_method: ENV['EXPORT_METHOD'],
+      output_name: "#{BUILD_IOS_FILENAME}.ipa",
+      export_options: {
+        provisioningProfiles: { 
+          "#{ENV['BUNDLE_IDENTIFIER']}" => "#{ENV['PUBLISH_PROVISIONING_PROFILE']}"
+        }
+      }
+    )
+  end
+
+  desc "IOS build IPA then upload to TestFlight"
+  lane :app_center_and_TF_build do |params|
+    ios_build_ipa
+    ios_upload_to_TF
+    clean_cache
+  end  
+
+  desc "IOS build IPA then upload to TestFlight"
+  lane :google_and_TF_build do |params|
+    ios_build_ipa
+    ios_upload_to_TF
+    clean_cache
+  end
+
+  desc "IOS code push"
+  lane :code_push do 
+    appcenter_codepush_release_react(
+      api_token: ENV['APP_CENTER_API_TOKEN'],
+      owner_name: ENV['APP_CENTER_OWNER_NAME'],
+      app_name: ENV['APP_CENTER_IOS_NAME'],
+      deployment: ENV['APP_CENTER_DEVELOPMENT'],
+      target_version: ENV['VERSION_NAME'],
+       mandatory: false
+    )
+  end
+end
+
+platform :android do 
+  desc "Android clean"
+  private_lane :clean_android do 
+     gradle(task: 'clean', project_dir: "#{ANDROID_PROJECT_DIR}", properties:{"defaultEnvFile" => ENV['ENVFILE']})
+  end
+
+  desc "Android build bundle(aab)"
+  private_lane :aab_android do
+     gradle(task: "bundle", build_type: "Release", project_dir: "#{ANDROID_PROJECT_DIR}" )
+     File.rename(ANDROID_AAB_BUILD_PATH_DEFAULT,  "../#{ANDROID_AAB_BUILD_PATH_UPLOAD}")
+  end
+
+  desc "Android build release(apk)"
+  private_lane :apk_android do
+     gradle(task: "assemble", build_type: "Release", project_dir: "#{ANDROID_PROJECT_DIR}" )
+     File.rename(ANDROID_APK_BUILD_PATH_DEFAULT,  "../#{ANDROID_APK_BUILD_PATH_UPLOAD}")
+  end
+
+
+  desc "Android build apk then upload to app google play"
+  lane :google_and_TF_build do |params|
+    aab_android
+    end
+
+  desc "Android build aab then upload to app center"
+  lane :app_center_and_TF_build do |params|
+    apk_android
+    upload_to_appcenter(
+      app_name: ENV['APP_CENTER_ANDROID_NAME'], 
+      file: "#{ANDROID_APK_BUILD_PATH_UPLOAD}",
+    )
+  end
+
+  desc "Android code push"
+  lane :code_push do 
+    appcenter_codepush_release_react(
+      api_token: ENV['APP_CENTER_API_TOKEN'],
+      owner_name: ENV['APP_CENTER_OWNER_NAME'],
+      app_name: ENV['APP_CENTER_ANDROID_NAME'],
+      deployment: ENV['APP_CENTER_DEVELOPMENT'],
+      target_version: ENV['VERSION_NAME'],
+      mandatory: false
+    )
+  end
+
+  desc "Android build aab then upload to internal testing"
+  lane :internal_build do
+    # aab_android
+    upload_to_play_store(
+      package_name: ENV['APP_ID'],
+      track: 'internal',
+      release_status: 'draft',
+      aab: "#{ANDROID_AAB_BUILD_PATH_UPLOAD}",
+      json_key: "fastlane/google-auth.json"
+    )
+  end
+end
