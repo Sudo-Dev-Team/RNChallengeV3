@@ -67,7 +67,10 @@ export const App = ({progress, maxHeight}: AppProps) => {
           {width, height, opacity, left: leftTop, top: leftTop},
         ]}>
         <FastImage
-          style={StyleSheet.absoluteFillObject}
+          style={[
+            StyleSheet.absoluteFillObject,
+            {top: 5, left: 5, bottom: 5, right: 5},
+          ]}
           source={require('../images/icon-app.png')}
         />
       </Animated.View>
