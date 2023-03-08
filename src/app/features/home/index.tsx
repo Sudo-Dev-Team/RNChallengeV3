@@ -98,6 +98,10 @@ export const Home = () => {
         text="Grid Rotate"
         onPress={handleNavigate(APP_SCREEN.GRID_ROTATE)}
       />
+      <ItemFunction
+        text="Ios App Open"
+        onPress={handleNavigate(APP_SCREEN.IOS_APP_OPEN)}
+      />
       <View style={{height: bottom + 10}} />
     </ScrollView>
   );

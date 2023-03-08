@@ -20,6 +20,7 @@ export enum APP_SCREEN {
   ADN = 'ADN',
   DARK_LIGHT_MODE = 'DARK_LIGHT_MODE',
   GRID_ROTATE = 'GRID_ROTATE',
+  IOS_APP_OPEN = 'IOS_APP_OPEN',
 }
 
 export type RootStackParamList = {
@@ -44,4 +45,5 @@ export type RootStackParamList = {
   [APP_SCREEN.ADN]: undefined;
   [APP_SCREEN.DARK_LIGHT_MODE]: undefined;
   [APP_SCREEN.GRID_ROTATE]: undefined;
+  [APP_SCREEN.IOS_APP_OPEN]: undefined;
 };

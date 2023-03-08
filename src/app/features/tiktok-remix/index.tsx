@@ -5,7 +5,7 @@ import {useSharedValue} from 'react-native-reanimated';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Video from 'react-native-video';
 
-import MaskedView from '@react-native-community/masked-view';
+import MaskedView from '@react-native-masked-view/masked-view';
 
 import {AnimatedMask} from './components/animated-mask';
 import {MaskView} from './components/mask-view';

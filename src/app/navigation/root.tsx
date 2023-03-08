@@ -28,6 +28,7 @@ import {TelegramLock} from '../features/telegram-lock';
 import {TiktokRemix} from '../features/tiktok-remix';
 import {DarkLightMode} from '../features/dark-light-mode';
 import {GridRotate} from '../features/grid-rotate';
+import {IosAppOpen} from '../features/ios-app-open';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -141,6 +142,11 @@ export const RootNavigation = () => {
           options={{title: 'Grid Rotate'}}
           name={APP_SCREEN.GRID_ROTATE}
           component={GridRotate}
+        />
+        <RootStack.Screen
+          options={{title: 'Ios App Open'}}
+          name={APP_SCREEN.IOS_APP_OPEN}
+          component={IosAppOpen}
         />
       </RootStack.Navigator>
     </NavigationContainer>

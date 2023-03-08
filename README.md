@@ -76,3 +76,7 @@
 ## Grid Rotate
 
 <image src="./preview/gridrotate.gif"/>
+
+## IOS App Open
+
+<image src="./preview/ios_app_open.gif"/>
