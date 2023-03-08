@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
+import {BackHandler, Platform} from 'react-native';
 
 export const randomUUID = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -30,3 +31,28 @@ export const sharedClamp = (
   'worklet';
   return Math.min(Math.max(lowerValue, value), upperValue);
 };
+
+export function useDisableBackHandler(
+  disabled: boolean,
+  callback?: () => void,
+) {
+  // function
+  const onBackPress = useCallback(() => {
+    if (typeof callback === 'function') {
+      callback();
+    }
+    return true;
+  }, [callback]);
+
+  useEffect(() => {
+    if (disabled) {
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    } else {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [disabled, onBackPress]);
+}
+
+export const isIOS = Platform.OS === 'ios';

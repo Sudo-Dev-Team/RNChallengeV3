@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
 
 import Animated, {
   useAnimatedStyle,
@@ -7,10 +7,10 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { BaseImage } from './components/base-image';
-import { Button } from './components/button';
-import { HEIGHT_WALL } from './constants';
-import { styles } from './styles';
+import {BaseImage} from './components/base-image';
+import {Button} from './components/button';
+import {HEIGHT_WALL} from './constants';
+import {styles} from './styles';
 
 export const Card3D = () => {
   // state
@@ -31,26 +31,21 @@ export const Card3D = () => {
   const wrapRestyle = useAnimatedStyle(() => {
     return {
       transform: [
-        { rotateX: `${rotateValue.value}deg` },
-        { rotateZ: `${rotateValue.value}deg` },
-        { scale: 0.8 },
+        {rotateX: `${rotateValue.value}deg`},
+        {rotateZ: `${rotateValue.value}deg`},
+        {scale: 0.8},
       ],
     };
   });
 
   const bottomRestyle = useAnimatedStyle(() => ({
     height: sizeWall.value,
-    transform: [
-      { skewX: '45deg' },
-      { translateX: withTiming(active ? 10 : 0) },
-    ],
+    // SkewX is not supported on native android
+    transform: [{translateX: withTiming(active ? 10 : 0)}, {skewX: '10deg'}],
   }));
 
   const rightRestyle = useAnimatedStyle(() => ({
-    transform: [
-      { skewY: '45deg' },
-      { translateY: withTiming(active ? 10 : 0) },
-    ],
+    transform: [{skewY: '45deg'}, {translateY: withTiming(active ? 10 : 0)}],
     width: sizeWall.value,
   }));
 

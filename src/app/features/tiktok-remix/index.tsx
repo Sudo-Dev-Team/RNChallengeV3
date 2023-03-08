@@ -1,8 +1,7 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import {useSharedValue} from 'react-native-reanimated';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import Animated, {useSharedValue} from 'react-native-reanimated';
 import Video from 'react-native-video';
 
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -40,13 +39,11 @@ export const TiktokRemix = () => {
         <MaskedView
           style={styles.content}
           maskElement={
-            <View style={styles.containerAnimated}>
-              <AnimatedMask
-                progress={progress}
-                scaleMask={scaleMask}
-                ref={maskRef}
-              />
-            </View>
+            <AnimatedMask
+              progress={progress}
+              scaleMask={scaleMask}
+              ref={maskRef}
+            />
           }>
           <MaskView />
         </MaskedView>

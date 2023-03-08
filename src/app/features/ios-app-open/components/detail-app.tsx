@@ -10,6 +10,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   APP_RADIUS,
   APP_SIZE,
@@ -23,6 +24,7 @@ import {DetailAppProps} from '../type';
 
 export const DetailApp = ({maxHeight, progress}: DetailAppProps) => {
   // state
+  const {top: insetTop} = useSafeAreaInsets();
   const {width: targetWidth} = useWindowDimensions();
   const contentHeight = useDerivedValue(() => maxHeight.value);
   const actualWidth = useDerivedValue(() =>
@@ -52,7 +54,16 @@ export const DetailApp = ({maxHeight, progress}: DetailAppProps) => {
     ),
   );
 
-  const leftTop = useDerivedValue(() =>
+  const top = useDerivedValue(() =>
+    interpolate(
+      progress.value,
+      [0, PROGRESS_FLIP, 1],
+      [LEFT_TOP + insetTop, LEFT_TOP + insetTop, 0],
+      Extrapolate.CLAMP,
+    ),
+  );
+
+  const left = useDerivedValue(() =>
     interpolate(
       progress.value,
       [0, PROGRESS_FLIP, 1],
@@ -91,14 +102,18 @@ export const DetailApp = ({maxHeight, progress}: DetailAppProps) => {
             height: actualHeight,
             borderRadius,
             opacity,
-            top: leftTop,
-            left: leftTop,
+            top,
+            left,
           },
         ]}>
         <Animated.View
           style={[
             styles.containerDetail,
-            {width: targetWidth, height: contentHeight},
+            {
+              width: targetWidth,
+              height: contentHeight,
+              paddingTop: insetTop + 10,
+            },
           ]}>
           <View style={styles.rowHeader}>
             <Text style={styles.allBoard}>All Boards</Text>

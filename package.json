@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "splash": "yarn react-native generate-bootsplash splash/splash.png --background-color=0E1019 --logo-width=150  --assets-path=assets --flavor=main",
     "android": "react-native run-android",
     "ios": "react-native run-ios --udid=F74FFD6B-1EE3-436D-B854-19155FE33774",
     "lint": "eslint .",
@@ -15,8 +16,9 @@
   "dependencies": {
     "@faker-js/faker": "^7.3.0",
     "@react-native-masked-view/masked-view": "^0.2.8",
+    "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
-    "@react-navigation/native-stack": "^6.9.12",
+    "@react-navigation/stack": "^6.3.16",
     "@shopify/react-native-skia": "^0.1.176",
     "d3": "^7.7.0",
     "gaussian": "^1.2.0",
@@ -24,6 +26,8 @@
     "react-fast-compare": "^3.2.0",
     "react-native": "0.71.3",
     "react-native-blurhash": "^1.1.10",
+    "react-native-bootsplash": "^4.5.2",
+    "react-native-code-push": "^7.1.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-linear-gradient": "^2.6.2",

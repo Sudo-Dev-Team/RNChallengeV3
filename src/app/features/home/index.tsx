@@ -7,6 +7,7 @@ import {ItemFunction} from './components/item-function';
 
 import {navigate} from '../../navigation/navigation-service';
 import {APP_SCREEN, RootStackParamList} from '../../navigation/screen-type';
+import {isIOS} from '../../constants';
 
 export const Home = () => {
   // state
@@ -45,10 +46,12 @@ export const Home = () => {
         text="Swipe Sort"
         onPress={handleNavigate(APP_SCREEN.SWIPE_SORT)}
       />
-      <ItemFunction
-        text="Card 3D"
-        onPress={handleNavigate(APP_SCREEN.CARD_3D)}
-      />
+      {isIOS ? (
+        <ItemFunction
+          text="Card 3D"
+          onPress={handleNavigate(APP_SCREEN.CARD_3D)}
+        />
+      ) : null}
       <ItemFunction
         text="Refresh Island"
         onPress={handleNavigate(APP_SCREEN.REFRESH_ISLAND)}

@@ -10,6 +10,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {APP_SIZE, DURATION, EASING, LEFT_TOP, PROGRESS_FLIP} from '../constant';
 import {styles} from '../styles';
 import {AppProps} from '../type';
@@ -17,6 +18,7 @@ import {AppProps} from '../type';
 export const App = ({progress, maxHeight}: AppProps) => {
   // state
   const {width: targetWidth} = useWindowDimensions();
+  const {top: insetTop} = useSafeAreaInsets();
   const width = useDerivedValue(() =>
     interpolate(
       progress.value,
@@ -34,7 +36,17 @@ export const App = ({progress, maxHeight}: AppProps) => {
       Extrapolate.CLAMP,
     ),
   );
-  const leftTop = useDerivedValue(() =>
+
+  const top = useDerivedValue(() =>
+    interpolate(
+      progress.value,
+      [0, PROGRESS_FLIP, 1],
+      [LEFT_TOP + insetTop, LEFT_TOP + insetTop, 0],
+      Extrapolate.CLAMP,
+    ),
+  );
+
+  const left = useDerivedValue(() =>
     interpolate(
       progress.value,
       [0, PROGRESS_FLIP, 1],
@@ -42,6 +54,7 @@ export const App = ({progress, maxHeight}: AppProps) => {
       Extrapolate.CLAMP,
     ),
   );
+
   const opacity = useDerivedValue(() =>
     interpolate(progress.value, [0, 0.8, 1], [1, 1, 0], Extrapolate.CLAMP),
   );
@@ -62,10 +75,7 @@ export const App = ({progress, maxHeight}: AppProps) => {
     <GestureDetector gesture={gesture}>
       <Animated.View
         animatedProps={props}
-        style={[
-          styles.app,
-          {width, height, opacity, left: leftTop, top: leftTop},
-        ]}>
+        style={[styles.app, {width, height, opacity, left, top}]}>
         <FastImage
           style={[
             StyleSheet.absoluteFillObject,

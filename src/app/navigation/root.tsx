@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator as createStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 
 import {navigationRef} from './navigation-service';
 import {APP_SCREEN, RootStackParamList} from './screen-type';
@@ -29,15 +29,40 @@ import {TiktokRemix} from '../features/tiktok-remix';
 import {DarkLightMode} from '../features/dark-light-mode';
 import {GridRotate} from '../features/grid-rotate';
 import {IosAppOpen} from '../features/ios-app-open';
+import Splash from 'react-native-bootsplash';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigation = () => {
+  // effect
+  useEffect(() => {
+    const id = setTimeout(() => {
+      Splash.hide().then(() => {
+        setTimeout(() => {
+          StatusBar.pushStackEntry({
+            barStyle: 'dark-content',
+            backgroundColor: 'transparent',
+            translucent: true,
+          });
+        }, 100);
+      });
+    }, 200);
+    return () => clearTimeout(id);
+  }, []);
+
   // render
   return (
     <NavigationContainer ref={navigationRef}>
-      <StatusBar barStyle={'dark-content'} />
-      <RootStack.Navigator screenOptions={{animation: 'slide_from_right'}}>
+      <StatusBar
+        translucent
+        barStyle={'dark-content'}
+        backgroundColor="transparent"
+      />
+      <RootStack.Navigator
+        screenOptions={{
+          ...TransitionPresets.SlideFromRightIOS,
+          headerTitleAlign: 'center',
+        }}>
         <RootStack.Screen
           options={{title: 'Home'}}
           name={APP_SCREEN.HOME}
@@ -94,22 +119,22 @@ export const RootNavigation = () => {
           component={ScratchTicket}
         />
         <RootStack.Screen
-          options={{title: 'Telegram Lock'}}
+          options={{title: 'Telegram Lock', headerShown: false}}
           name={APP_SCREEN.TELEGRAM_LOCK}
           component={TelegramLock}
         />
         <RootStack.Screen
-          options={{title: 'Icon Mask Transition'}}
+          options={{title: 'Icon Mask Transition', headerShown: false}}
           name={APP_SCREEN.ICON_MASK_TRANSITION}
           component={IconMaskTransition}
         />
         <RootStack.Screen
-          options={{title: 'Like Button'}}
+          options={{title: 'Like Button', headerShown: false}}
           name={APP_SCREEN.LIKE_BUTTON}
           component={LikeButton}
         />
         <RootStack.Screen
-          options={{title: 'Infinity Dot'}}
+          options={{title: 'Infinity Dot', headerShown: false}}
           name={APP_SCREEN.INFINITY_DOT}
           component={InfinityDot}
         />
@@ -124,27 +149,27 @@ export const RootNavigation = () => {
           component={PieChart}
         />
         <RootStack.Screen
-          options={{title: 'Tiktok remix'}}
+          options={{title: 'Tiktok remix', headerShown: false}}
           name={APP_SCREEN.TIKTOK_REMIX}
           component={TiktokRemix}
         />
         <RootStack.Screen
-          options={{title: 'ADN'}}
+          options={{title: 'ADN', headerShown: false}}
           name={APP_SCREEN.ADN}
           component={ADN}
         />
         <RootStack.Screen
-          options={{title: 'Dark Light Mode'}}
+          options={{title: 'Dark Light Mode', headerShown: false}}
           name={APP_SCREEN.DARK_LIGHT_MODE}
           component={DarkLightMode}
         />
         <RootStack.Screen
-          options={{title: 'Grid Rotate'}}
+          options={{title: 'Grid Rotate', headerShown: false}}
           name={APP_SCREEN.GRID_ROTATE}
           component={GridRotate}
         />
         <RootStack.Screen
-          options={{title: 'Ios App Open'}}
+          options={{title: 'Ios App Open', headerShown: false}}
           name={APP_SCREEN.IOS_APP_OPEN}
           component={IosAppOpen}
         />
