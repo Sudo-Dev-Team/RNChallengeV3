@@ -80,3 +80,7 @@
 ## IOS App Open
 
 <image src="./preview/ios_app_open.gif"/>
+
+## Dots Animated
+
+<image src="./preview/dots_animated.gif"/>
