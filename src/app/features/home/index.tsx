@@ -105,6 +105,10 @@ export const Home = () => {
         text="Ios App Open"
         onPress={handleNavigate(APP_SCREEN.IOS_APP_OPEN)}
       />
+      <ItemFunction
+        text="Dots Animation"
+        onPress={handleNavigate(APP_SCREEN.DOTS_ANIMATION)}
+      />
       <View style={{height: bottom + 10}} />
     </ScrollView>
   );

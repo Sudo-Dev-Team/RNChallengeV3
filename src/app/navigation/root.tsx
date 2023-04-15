@@ -30,6 +30,7 @@ import {DarkLightMode} from '../features/dark-light-mode';
 import {GridRotate} from '../features/grid-rotate';
 import {IosAppOpen} from '../features/ios-app-open';
 import Splash from 'react-native-bootsplash';
+import {DotsAnimation} from '../features/dots-animation';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -172,6 +173,11 @@ export const RootNavigation = () => {
           options={{title: 'Ios App Open', headerShown: false}}
           name={APP_SCREEN.IOS_APP_OPEN}
           component={IosAppOpen}
+        />
+        <RootStack.Screen
+          options={{title: 'Dots Animation', headerShown: false}}
+          name={APP_SCREEN.DOTS_ANIMATION}
+          component={DotsAnimation}
         />
       </RootStack.Navigator>
     </NavigationContainer>

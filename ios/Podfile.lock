@@ -360,7 +360,7 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-skia (0.1.176):
+  - react-native-skia (0.1.183):
     - React
     - React-callinvoker
     - React-Core
@@ -466,7 +466,7 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNReanimated (3.0.1):
+  - RNReanimated (3.0.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -751,7 +751,7 @@ SPEC CHECKSUMS:
   React-logger: 957e5dc96d9dbffc6e0f15e0ee4d2b42829ff207
   react-native-blurhash: add4df9a937b4e021a24bc67a0714f13e0bd40b7
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
-  react-native-skia: 8a4e90b1cf38e709491ead1ef1198b298e512640
+  react-native-skia: c90c83e2cde1306cc7c4170d2bd4c0426446e270
   react-native-video: a38e0a394fd8884fef4a48d866f1ed9a930f8385
   React-perflogger: af8a3d31546077f42d729b949925cc4549f14def
   React-RCTActionSheet: 57cc5adfefbaaf0aae2cf7e10bccd746f2903673
@@ -770,7 +770,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNReanimated: 42295301c43f974340a510ba18d5a2031c191c30
+  RNReanimated: f0dd6b881808e635ef0673f89642937d6c141314
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
@@ -782,4 +782,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ce369eb85a3d86e39be6b1e0493c6fceb15aeb4a
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0
