@@ -21,7 +21,6 @@ import {
   SkPath,
   useComputedValue,
   useValue,
-  useSharedValueEffect,
 } from '@shopify/react-native-skia';
 
 import {GRAPH_HEIGHT, GRAPH_WIDTH, randomDataChart} from './mock';
@@ -72,6 +71,12 @@ export const LineChart = () => {
     );
   }, [progressColor, currentColor, nextColor]);
 
+  // un comment to see bug update translateX with 1 skia value and 1 reanimated value
+  // const transform = useDerivedValue(
+  //   () => [{translateX: translateX.value}],
+  //   [translateX],
+  // );
+
   const transform = useComputedValue(
     () => [{translateX: translateXSkia.current}],
     [translateXSkia],
@@ -93,14 +98,26 @@ export const LineChart = () => {
       progressPath.current = 0;
       leftBound.value = -data.width + GRAPH_WIDTH;
       reset.value = true;
+
+      // with 1 skia value, path not update on the same time with translateX
+      // runTiming(progressPath, 1, {
+      //   duration: 3000,
+      //   easing: Easing.linear,
+      // });
+
+      // translateX.value = withTiming(-data.width + GRAPH_WIDTH, {
+      //   duration: 3000,
+      // });
+
+      // with 2 skia value, path update on the same time with translateX
       runTiming(progressPath, 1, {
-        duration: 300,
+        duration: 1000,
         easing: Easing.linear,
       });
-      runTiming(translateXSkia, -data.width + GRAPH_WIDTH, {duration: 300});
+      runTiming(translateXSkia, -data.width + GRAPH_WIDTH, {duration: 1000});
 
       progressColor.value = withTiming(-data.width + GRAPH_WIDTH, {
-        duration: 300,
+        duration: 1000,
         easing: Easing.linear,
       });
     };
@@ -111,6 +128,7 @@ export const LineChart = () => {
   };
 
   const panGesture = useMemo(() => {
+    // dot not update skia on the main thread. this will crash app
     return Gesture.Pan()
       .onBegin(() => {
         if (reset.value) {
