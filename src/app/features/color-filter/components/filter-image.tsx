@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 
 import Animated, {
   interpolate,
@@ -7,14 +7,8 @@ import Animated, {
   useDerivedValue,
 } from 'react-native-reanimated';
 
-import {
-  Canvas,
-  ColorMatrix,
-  Image,
-  useImage,
-} from '@shopify/react-native-skia';
+import {Canvas, ColorMatrix, Image, useImage} from '@shopify/react-native-skia';
 
-import { images } from '../../../assets/images';
 import {
   A1_OUTPUT_RANGE,
   A2_OUTPUT_RANGE,
@@ -39,12 +33,16 @@ import {
   SIZE_ITEM,
   SPACER_LIST,
 } from '../constants';
-import { styles } from '../styles';
-import { FilterImageProps } from '../type';
+import {styles} from '../styles';
+import {FilterImageProps} from '../type';
 
-export const FilterImage = ({ index, item, scrollX }: FilterImageProps) => {
+export const FilterImage = ({
+  index,
+  item,
+  scrollX,
+  image,
+}: FilterImageProps) => {
   // state
-  const image = useImage(images.cat);
   const inputRange = useDerivedValue(() => {
     const sizeItem = SIZE_ITEM + SPACER_LIST;
     return [(index - 1) * sizeItem, index * sizeItem, (index + 1) * sizeItem];
@@ -59,7 +57,7 @@ export const FilterImage = ({ index, item, scrollX }: FilterImageProps) => {
 
   const itemRestyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    transform: [{ translateY: translateY.value }],
+    transform: [{translateY: translateY.value}],
   }));
 
   if (!image) {

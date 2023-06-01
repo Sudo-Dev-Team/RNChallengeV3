@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">React Native Challenge</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">JRpZHdYUp5hqkRGk2p34hHTnAoWacJmcdThvN</string>
 </resources>

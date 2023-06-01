@@ -1,27 +1,33 @@
-import React from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import React, {useMemo} from 'react';
+import {Button, StyleSheet, View} from 'react-native';
 
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useSharedValue } from 'react-native-reanimated';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import {
+  Easing,
+  interpolateColor,
+  runOnJS,
+  useAnimatedReaction,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import {
   Canvas,
   Group,
-  interpolateColors,
-  interpolatePaths,
   Path,
   runTiming,
   Skia,
   SkPath,
   useComputedValue,
-  useSharedValueEffect,
   useValue,
+  useSharedValueEffect,
 } from '@shopify/react-native-skia';
 
-import { GRAPH_HEIGHT, GRAPH_WIDTH, randomDataChart } from './mock';
-import { DataPath } from './type';
+import {GRAPH_HEIGHT, GRAPH_WIDTH, randomDataChart} from './mock';
+import {DataPath} from './type';
 
-import { sharedClamp } from '../../constants';
+import {sharedClamp} from '../../constants';
 
 const dataExample = randomDataChart();
 const dayPathSk = Skia.Path.MakeFromSVGString(
@@ -39,83 +45,95 @@ const yearPathSk = Skia.Path.MakeFromSVGString(
 
 export const LineChart = () => {
   // state
-  const translateXSkia = useValue(-dataExample.dayData.width + GRAPH_WIDTH);
   const translateX = useSharedValue(-dataExample.dayData.width + GRAPH_WIDTH);
+  const translateXSkia = useValue(-dataExample.dayData.width + GRAPH_WIDTH);
   const leftBound = useSharedValue(-dataExample.dayData.width + GRAPH_WIDTH);
   const reset = useSharedValue(false);
   const progressPath = useValue(0);
-  const progressColor = useValue(0);
-  const currentPath = useValue(dayPathSk);
-  const nextPath = useValue(dayPathSk);
-  const currentColor = useValue(dataExample.dayData.color);
-  const nextColor = useValue(dataExample.dayData.color);
+  const progressColor = useSharedValue(0);
+  const paths = useValue<{from: SkPath; to: SkPath}>({
+    from: dayPathSk,
+    to: dayPathSk,
+  });
+  const currentColor = useSharedValue(dataExample.dayData.color);
+  const nextColor = useSharedValue(dataExample.dayData.color);
 
   const path = useComputedValue(() => {
-    return interpolatePaths(
-      progressPath.current,
-      [0, 1],
-      [currentPath.current, nextPath.current],
-    );
-  }, [progressPath, currentPath, nextPath]);
+    const {from, to} = paths.current;
+    if (!from || !to) return Skia.Path.Make();
+    return to.interpolate(from, progressPath.current)!;
+  }, [progressPath]);
 
-  const color = useComputedValue(() => {
-    return interpolateColors(
-      progressColor.current,
+  const color = useDerivedValue(() => {
+    return interpolateColor(
+      progressColor.value,
       [0, 1],
-      [currentColor.current, nextColor.current],
+      [currentColor.value, nextColor.value],
     );
   }, [progressColor, currentColor, nextColor]);
 
   const transform = useComputedValue(
-    () => [{ translateX: translateXSkia.current }],
+    () => [{translateX: translateXSkia.current}],
     [translateXSkia],
   );
-
-  useSharedValueEffect(() => {
-    translateXSkia.current = translateX.value;
-  }, translateX);
 
   // func
   const handleChangePath = (nextNextPath: SkPath, data: DataPath) => {
     return () => {
       // color
-      currentColor.current = nextColor.current;
-      nextColor.current = data.color;
-      progressColor.current = 0;
+      currentColor.value = nextColor.value;
+      nextColor.value = data.color;
+      progressColor.value = 0;
 
       // path
-      currentPath.current = nextPath.current;
-      nextPath.current = nextNextPath;
+      paths.current = {
+        from: paths.current.to,
+        to: nextNextPath,
+      };
       progressPath.current = 0;
-
-      // translateX
       leftBound.value = -data.width + GRAPH_WIDTH;
       reset.value = true;
-      // translateX.value = -data.width + GRAPH_WIDTH;
-      runTiming(translateXSkia, -data.width + GRAPH_WIDTH, { duration: 300 });
-      // translateXSkia.current = -data.width + GRAPH_WIDTH;
-      // run
-      runTiming(progressPath, 1, { duration: 300 });
-      runTiming(progressColor, 1, { duration: 300 });
+      runTiming(progressPath, 1, {
+        duration: 300,
+        easing: Easing.linear,
+      });
+      runTiming(translateXSkia, -data.width + GRAPH_WIDTH, {duration: 300});
+
+      progressColor.value = withTiming(-data.width + GRAPH_WIDTH, {
+        duration: 300,
+        easing: Easing.linear,
+      });
     };
   };
-  // runTiming(translateX, 100);
-  const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      console.log(translateXSkia.current);
-      if (reset.value) {
-        translateX.value = leftBound.value;
-        reset.value = false;
-      }
-      // translateX.value = leftBound.value;
-    })
-    .onChange(({ changeX }) => {
-      translateX.value = sharedClamp(
-        translateX.value + changeX,
-        leftBound.value,
-        0,
-      );
-    });
+
+  const updateSkia = (value: number) => {
+    translateXSkia.current = value;
+  };
+
+  const panGesture = useMemo(() => {
+    return Gesture.Pan()
+      .onBegin(() => {
+        if (reset.value) {
+          translateX.value = leftBound.value;
+          reset.value = false;
+        }
+      })
+      .onChange(({changeX}) => {
+        translateX.value = sharedClamp(
+          translateX.value + changeX,
+          leftBound.value,
+          0,
+        );
+      });
+  }, []);
+
+  useAnimatedReaction(
+    () => translateX.value,
+    (v, prev) => {
+      if (prev === v) return;
+      runOnJS(updateSkia)(v);
+    },
+  );
 
   // render
   return (

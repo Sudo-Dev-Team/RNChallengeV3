@@ -3,12 +3,14 @@ import {FlatList, FlatListProps, ListRenderItemInfo, View} from 'react-native';
 
 import Animated, {
   useAnimatedScrollHandler,
+  useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
 
 import {
   Canvas,
   useCanvasRef,
+  useImage,
   useSharedValueEffect,
   useValue,
 } from '@shopify/react-native-skia';
@@ -17,14 +19,17 @@ import {Background} from './components/background';
 import {FilterImage} from './components/filter-image';
 import {FILTER_ARRAY, SPACER_LIST} from './constants';
 import {styles} from './styles';
+import {images} from '../../assets/images';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<string>>(FlatList);
 
 export const ColorFilter = () => {
   // state
+  const image = useImage(images.cat);
+
   const scrollX = useSharedValue(0);
-  const scrollXSkia = useValue(0);
+  const scrollXSkia = useDerivedValue(() => scrollX.value + SPACER_LIST);
   const canvas = useCanvasRef();
   // func
   const onScroll = useAnimatedScrollHandler({
@@ -34,7 +39,9 @@ export const ColorFilter = () => {
   });
 
   const renderItem = ({index, item}: ListRenderItemInfo<string>) => {
-    return <FilterImage index={index} item={item} scrollX={scrollX} />;
+    return (
+      <FilterImage image={image!} index={index} item={item} scrollX={scrollX} />
+    );
   };
 
   const keyExtractor = (_item: string, index: number) => {
@@ -44,11 +51,6 @@ export const ColorFilter = () => {
   const renderSpacer = () => {
     return <View style={styles.spacer} />;
   };
-
-  // effect
-  useSharedValueEffect(() => {
-    scrollXSkia.current = scrollX.value + SPACER_LIST;
-  }, scrollX);
 
   // render
   return (

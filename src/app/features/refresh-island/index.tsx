@@ -2,7 +2,12 @@ import React from 'react';
 import {useWindowDimensions, View} from 'react-native';
 
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
-import {Extrapolate, useSharedValue, withTiming} from 'react-native-reanimated';
+import {
+  Extrapolate,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import {
   Blur,
@@ -32,7 +37,14 @@ export const RefreshIsland = () => {
   const {width} = useWindowDimensions();
 
   const translateY = useSharedValue(0);
-  const translateYSkia = useValue(MARGIN_TOP);
+  const translateYSkia = useDerivedValue(() => {
+    return interpolate(
+      translateY.value,
+      [RADIUS_CIRCLE + MARGIN_TOP - 1, RADIUS_CIRCLE + MARGIN_TOP, 80, 180],
+      [RADIUS_CIRCLE + MARGIN_TOP, RADIUS_CIRCLE + MARGIN_TOP, 80, 150],
+      Extrapolate.EXTEND,
+    );
+  });
 
   // gesture
   const gesture = Gesture.Pan()
@@ -43,18 +55,6 @@ export const RefreshIsland = () => {
       translateY.value = withTiming(RADIUS_CIRCLE + MARGIN_TOP);
     });
 
-  // restyle
-  useSharedValueEffect(() => {
-    translateYSkia.current = interpolate(
-      translateY.value,
-      [RADIUS_CIRCLE + MARGIN_TOP - 1, RADIUS_CIRCLE + MARGIN_TOP, 80, 180],
-      [RADIUS_CIRCLE + MARGIN_TOP, RADIUS_CIRCLE + MARGIN_TOP, 80, 150],
-      Extrapolate.EXTEND,
-    );
-  }, translateY);
-  useValueEffect(translateYSkia, v => {
-    console.log({v});
-  });
   // render
   return (
     <GestureDetector gesture={gesture}>

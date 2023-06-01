@@ -1,12 +1,13 @@
 import Animated from 'react-native-reanimated';
 
-import {SkiaValue} from '@shopify/react-native-skia';
+import {SkImage} from '@shopify/react-native-skia';
 
 export type FilterImageProps = {
+  image: SkImage;
   index: number;
   item: string;
   scrollX: Animated.SharedValue<number>;
 };
 export type BackgroundProps = {
-  scrollX: SkiaValue<number>;
+  scrollX: Animated.SharedValue<number>;
 };
