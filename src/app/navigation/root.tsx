@@ -31,6 +31,7 @@ import {GridRotate} from '../features/grid-rotate';
 import {IosAppOpen} from '../features/ios-app-open';
 import Splash from 'react-native-bootsplash';
 import {DotsAnimation} from '../features/dots-animation';
+import {LineGraph} from '../features/line-graph';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -178,6 +179,11 @@ export const RootNavigation = () => {
           options={{title: 'Dots Animation', headerShown: false}}
           name={APP_SCREEN.DOTS_ANIMATION}
           component={DotsAnimation}
+        />
+        <RootStack.Screen
+          options={{title: 'Line Graph', gestureEnabled: false}}
+          name={APP_SCREEN.LINE_GRAPH}
+          component={LineGraph}
         />
       </RootStack.Navigator>
     </NavigationContainer>

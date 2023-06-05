@@ -109,6 +109,10 @@ export const Home = () => {
         text="Dots Animation"
         onPress={handleNavigate(APP_SCREEN.DOTS_ANIMATION)}
       />
+      <ItemFunction
+        text="Line Graph"
+        onPress={handleNavigate(APP_SCREEN.LINE_GRAPH)}
+      />
       <View style={{height: bottom + 10}} />
     </ScrollView>
   );

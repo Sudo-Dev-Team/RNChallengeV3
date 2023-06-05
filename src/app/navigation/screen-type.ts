@@ -22,6 +22,7 @@ export enum APP_SCREEN {
   GRID_ROTATE = 'GRID_ROTATE',
   IOS_APP_OPEN = 'IOS_APP_OPEN',
   DOTS_ANIMATION = 'DOTS_ANIMATION',
+  LINE_GRAPH = 'LINE_GRAPH',
 }
 
 export type RootStackParamList = {
@@ -48,4 +49,5 @@ export type RootStackParamList = {
   [APP_SCREEN.GRID_ROTATE]: undefined;
   [APP_SCREEN.IOS_APP_OPEN]: undefined;
   [APP_SCREEN.DOTS_ANIMATION]: undefined;
+  [APP_SCREEN.LINE_GRAPH]: undefined;
 };
