@@ -113,6 +113,10 @@ export const Home = () => {
         text="Line Graph"
         onPress={handleNavigate(APP_SCREEN.LINE_GRAPH)}
       />
+      <ItemFunction
+        text="Gesture Function"
+        onPress={handleNavigate(APP_SCREEN.GESTURE_FUNCTION)}
+      />
       <View style={{height: bottom + 10}} />
     </ScrollView>
   );

@@ -1,14 +1,14 @@
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 
-import { curveBumpX as curveBasis, line, scaleLinear, scaleTime } from 'd3';
+import {curveBumpX as curveBasis, line, scaleLinear, scaleTime} from 'd3';
 import gaussian from 'gaussian';
 
-import { DataChart, DataPath } from './type';
+import {DataChart, DataPath} from './type';
 
-const DAY_LENGTH_DATA = 20;
+const DAY_LENGTH_DATA = 5;
 const WEEK_LENGTH_DATA = DAY_LENGTH_DATA * 7;
 const MONTH_LENGTH_DATA = DAY_LENGTH_DATA * 30;
-const YEAR_LENGTH_DATA = DAY_LENGTH_DATA * 365;
+const YEAR_LENGTH_DATA = DAY_LENGTH_DATA * 10;
 export const GRAPH_HEIGHT = 350;
 export const GRAPH_WIDTH = Dimensions.get('window').width - 20;
 export const GRAPH_DAY_WIDTH = Dimensions.get('window').width - 20;

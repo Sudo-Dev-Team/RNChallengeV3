@@ -351,7 +351,7 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-skia (0.1.193):
+  - react-native-skia (0.1.195):
     - React
     - React-callinvoker
     - React-Core
@@ -728,7 +728,7 @@ SPEC CHECKSUMS:
   React-logger: 342f358b8decfbf8f272367f4eacf4b6154061be
   react-native-blurhash: add4df9a937b4e021a24bc67a0714f13e0bd40b7
   react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753
-  react-native-skia: e92aaf74c38d71feb315deed516a91d211f90553
+  react-native-skia: a9100697e223b7c62218e6eb7ccb5bf23fd3b0d6
   react-native-video: fee89269ad07556d960721f3b62e39be6ace3c90
   React-perflogger: d21f182895de9d1b077f8a3cd00011095c8c9100
   React-RCTActionSheet: 0151f83ef92d2a7139bba7dfdbc8066632a6d47b

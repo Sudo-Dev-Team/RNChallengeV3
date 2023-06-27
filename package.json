@@ -19,7 +19,7 @@
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
-    "@shopify/react-native-skia": "^0.1.193",
+    "@shopify/react-native-skia": "^0.1.195",
     "d3": "^7.7.0",
     "gaussian": "^1.2.0",
     "react": "18.2.0",

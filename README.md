@@ -84,3 +84,11 @@
 ## Dots Animated
 
 <image src="./preview/dots_animated.gif"/>
+
+## Line Graph
+
+<image src="./preview/line_graph.gif"/>
+
+## Gesture Function
+
+<image src="./preview/gesture_function.gif"/>

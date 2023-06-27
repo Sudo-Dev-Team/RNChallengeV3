@@ -32,6 +32,7 @@ import {IosAppOpen} from '../features/ios-app-open';
 import Splash from 'react-native-bootsplash';
 import {DotsAnimation} from '../features/dots-animation';
 import {LineGraph} from '../features/line-graph';
+import {GestureFunction} from '../features/gesture-function';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -184,6 +185,11 @@ export const RootNavigation = () => {
           options={{title: 'Line Graph', gestureEnabled: false}}
           name={APP_SCREEN.LINE_GRAPH}
           component={LineGraph}
+        />
+        <RootStack.Screen
+          options={{title: 'Gesture Function', gestureEnabled: false}}
+          name={APP_SCREEN.GESTURE_FUNCTION}
+          component={GestureFunction}
         />
       </RootStack.Navigator>
     </NavigationContainer>

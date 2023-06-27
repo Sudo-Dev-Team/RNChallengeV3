@@ -23,6 +23,7 @@ export enum APP_SCREEN {
   IOS_APP_OPEN = 'IOS_APP_OPEN',
   DOTS_ANIMATION = 'DOTS_ANIMATION',
   LINE_GRAPH = 'LINE_GRAPH',
+  GESTURE_FUNCTION = 'GESTURE_FUNCTION',
 }
 
 export type RootStackParamList = {
@@ -50,4 +51,5 @@ export type RootStackParamList = {
   [APP_SCREEN.IOS_APP_OPEN]: undefined;
   [APP_SCREEN.DOTS_ANIMATION]: undefined;
   [APP_SCREEN.LINE_GRAPH]: undefined;
+  [APP_SCREEN.GESTURE_FUNCTION]: undefined;
 };
