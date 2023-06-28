@@ -41,7 +41,7 @@ export const Card3D = () => {
   const bottomRestyle = useAnimatedStyle(() => ({
     height: sizeWall.value,
     // SkewX is not supported on native android
-    transform: [{translateX: withTiming(active ? 10 : 0)}, {skewX: '10deg'}],
+    transform: [{translateX: withTiming(active ? 10 : 0)}, {skewX: '45deg'}],
   }));
 
   const rightRestyle = useAnimatedStyle(() => ({

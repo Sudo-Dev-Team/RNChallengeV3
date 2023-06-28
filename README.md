@@ -62,8 +62,7 @@
 
 ## Tiktok Remix (clone and run to get sound)
 
-<video style="object-fit: cover;" type="video/mp4" src="./preview/tiktok.mp4" width="800" height="870" autoplay controls loop>
-</video>
+<image src="./preview/tiktok.gif"/>
 
 ## ADN
 

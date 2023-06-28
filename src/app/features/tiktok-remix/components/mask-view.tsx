@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import {Image, useImage} from '@shopify/react-native-skia';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {useWindowDimensions} from 'react-native';
+import {MaskViewProps} from '../type';
 
-import FastImage from 'react-native-fast-image';
-
-export const MaskView = () => {
+export const MaskView = ({image}: MaskViewProps) => {
+  // state
+  const {width, height} = useWindowDimensions();
   // render
   return (
-    <FastImage
-      style={StyleSheet.absoluteFillObject}
-      source={require('../files/image1.jpeg')}
+    <Image
+      fit={'cover'}
+      width={width}
+      height={height}
+      x={0}
+      y={0}
+      image={image}
     />
   );
 };

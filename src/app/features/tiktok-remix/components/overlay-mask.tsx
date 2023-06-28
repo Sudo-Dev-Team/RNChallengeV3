@@ -1,23 +1,28 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
-import FastImage from 'react-native-fast-image';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import {useDerivedValue} from 'react-native-reanimated';
 
-import { OverlayMaskProps } from '../type';
+import {Group, Image} from '@shopify/react-native-skia';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../constant';
+import {OverlayMaskProps} from '../type';
 
-export const OverlayMask = ({ scaleMask }: OverlayMaskProps) => {
-  // restyle
-  const style = useAnimatedStyle(() => ({
-    transform: [{ scale: scaleMask.value }],
-  }));
+export const OverlayMask = ({image, scaleMask}: OverlayMaskProps) => {
+  // skProps
+  const transform = useDerivedValue(() => [{scale: scaleMask.value}]);
+
   // render
   return (
-    <Animated.View style={[StyleSheet.absoluteFillObject, style]}>
-      <FastImage
-        style={StyleSheet.absoluteFillObject}
-        source={require('../files/image2.jpeg')}
+    <Group
+      transform={transform}
+      origin={{x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2}}>
+      <Image
+        x={0}
+        y={0}
+        width={SCREEN_WIDTH}
+        height={SCREEN_HEIGHT}
+        fit={'cover'}
+        image={image}
       />
-    </Animated.View>
+    </Group>
   );
 };

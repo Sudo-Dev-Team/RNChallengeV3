@@ -1,13 +1,14 @@
 import React, {forwardRef, useCallback, useImperativeHandle} from 'react';
 
-import Animated, {
+import {
   Easing,
-  useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withDelay,
   withSequence,
 } from 'react-native-reanimated';
 
+import {Group, Rect} from '@shopify/react-native-skia';
 import {
   ORIGIN_HEIGHT,
   SCREEN_HEIGHT,
@@ -16,26 +17,30 @@ import {
 } from '../constant';
 import {TiktokRemixProps} from '../type';
 
+const deg2rad = (deg: number) => {
+  'worklet';
+
+  return (deg * Math.PI) / 180;
+};
+
 export const AnimatedMask = forwardRef(
   ({scaleMask, progress}: TiktokRemixProps, ref) => {
     // state
-    const width = useSharedValue(SCREEN_WIDTH);
-    const height = useSharedValue(SCREEN_HEIGHT);
     const rotate = useSharedValue(0);
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
+    const scaleX = useSharedValue(1);
 
     // func
     const run = useCallback(() => {
-      width.value = SCREEN_WIDTH;
-      height.value = SCREEN_HEIGHT;
+      scaleX.value = 1;
       rotate.value = 0;
       translateX.value = 0;
       translateY.value = 0;
       rotate.value = withDelay(100, sharedTiming(-90, {duration: 1500}));
-      width.value = withDelay(
+      scaleX.value = withDelay(
         100,
-        sharedTiming(ORIGIN_HEIGHT, {duration: 700}, f => {
+        sharedTiming(ORIGIN_HEIGHT / SCREEN_WIDTH, {duration: 700}, f => {
           'worklet';
           if (f) {
             scaleMask.value = withSequence(
@@ -64,11 +69,11 @@ export const AnimatedMask = forwardRef(
                     400,
                     sharedTiming(0, {duration: 800}),
                   );
-                  width.value = withDelay(
+                  scaleX.value = withDelay(
                     600,
                     withSequence(
                       sharedTiming(
-                        SCREEN_WIDTH - 20,
+                        (SCREEN_WIDTH - 20) / SCREEN_WIDTH,
                         {
                           duration: 150,
                         },
@@ -84,8 +89,8 @@ export const AnimatedMask = forwardRef(
                               f4 => {
                                 'worklet';
                                 if (f4) {
-                                  width.value = sharedTiming(
-                                    ORIGIN_HEIGHT,
+                                  scaleX.value = sharedTiming(
+                                    ORIGIN_HEIGHT / SCREEN_WIDTH,
                                     {
                                       duration: 250,
                                     },
@@ -105,14 +110,14 @@ export const AnimatedMask = forwardRef(
                                                   duration: 300,
                                                 }),
                                                 sharedTiming(
-                                                  -0,
+                                                  0,
                                                   {
                                                     duration: 250,
                                                   },
                                                   f7 => {
                                                     'worklet';
                                                     if (f7) {
-                                                      width.value =
+                                                      scaleX.value =
                                                         sharedTiming(0, {
                                                           duration: 200,
                                                         });
@@ -149,23 +154,31 @@ export const AnimatedMask = forwardRef(
       );
     }, []);
 
-    // restyle
-    const style = useAnimatedStyle(() => ({
-      width: width.value,
-      height: height.value,
-      transform: [
-        {rotate: `${rotate.value}deg`},
-        {translateX: translateX.value},
-        {translateY: translateY.value},
-      ],
-      backgroundColor: '#000',
-    }));
+    // skProps
+    const transform = useDerivedValue(() => [
+      {rotate: deg2rad(rotate.value)},
+      {translateX: translateX.value},
+      {translateY: translateY.value},
+      {scaleX: scaleX.value},
+    ]);
 
     // effect
     useImperativeHandle(ref, () => ({run}), [run]);
 
     // render
-    return <Animated.View style={style} />;
+    return (
+      <Group
+        transform={transform}
+        origin={{x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2}}>
+        <Rect
+          x={0}
+          y={-SCREEN_HEIGHT * 0.5}
+          color={'#000'}
+          width={SCREEN_WIDTH}
+          height={SCREEN_HEIGHT * 2}
+        />
+      </Group>
+    );
   },
 );
 

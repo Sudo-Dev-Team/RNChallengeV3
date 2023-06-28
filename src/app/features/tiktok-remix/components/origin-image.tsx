@@ -1,24 +1,27 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 
-import FastImage from 'react-native-fast-image';
-import Animated, {
+import {
   Easing,
   interpolate,
   useAnimatedReaction,
-  useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
 
-import {INPUT_OPACITY, OUTPUT_OPACITY, sharedTiming} from '../constant';
-import {styles} from '../styles';
+import {Group, Image, Rect, rect} from '@shopify/react-native-skia';
+import {
+  INPUT_OPACITY,
+  OUTPUT_OPACITY,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  sharedTiming,
+} from '../constant';
 import {OriginImageProps} from '../type';
 
-export const OriginImage = ({progress}: OriginImageProps) => {
+export const OriginImage = ({image, progress}: OriginImageProps) => {
   // state
   const progressBackdrop = useSharedValue(0);
-  const opacity = useDerivedValue(() =>
+  const opacityBackdrop = useDerivedValue(() =>
     interpolate(progressBackdrop.value, INPUT_OPACITY, OUTPUT_OPACITY),
   );
 
@@ -36,43 +39,61 @@ export const OriginImage = ({progress}: OriginImageProps) => {
     },
   );
 
-  // restyle
-  const backdropStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
+  // skProps
 
-  const topStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(progress.value, [0, 0.3], [0, 1]),
-    transform: [{translateX: interpolate(progress.value, [0, 1], [-600, 0])}],
-  }));
-  const bottomStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(progress.value, [0, 0.3], [0, 1]),
-    transform: [{translateX: interpolate(progress.value, [0, 1], [600, 0])}],
-  }));
+  const transformTop = useDerivedValue(() => [
+    {
+      translateX: interpolate(progress.value, [0, 1], [-600, 0]),
+    },
+  ]);
+
+  const opacityImage = useDerivedValue(() =>
+    interpolate(progress.value, [0, 0.3], [0, 1]),
+  );
+
+  const transformBottom = useDerivedValue(() => [
+    {
+      translateX: interpolate(progress.value, [0, 1], [600, 0]),
+    },
+  ]);
 
   // render
   return (
-    <View style={[StyleSheet.absoluteFillObject]}>
-      <View style={styles.halfImage}>
-        <Animated.View style={[styles.containerImage, topStyle]}>
-          <FastImage
-            resizeMode="cover"
-            style={StyleSheet.absoluteFillObject}
-            source={require('../files/image3.jpeg')}
-          />
-        </Animated.View>
-      </View>
-      <View style={styles.halfImage}>
-        <Animated.View
-          style={[styles.containerImage, styles.halfImageBottom, bottomStyle]}>
-          <FastImage
-            resizeMode="cover"
-            style={StyleSheet.absoluteFillObject}
-            source={require('../files/image3.jpeg')}
-          />
-        </Animated.View>
-      </View>
-      <Animated.View style={[styles.backdropOrigin, backdropStyle]} />
-    </View>
+    <Group>
+      <Group
+        opacity={opacityImage}
+        transform={transformTop}
+        clip={rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2)}>
+        <Image
+          x={0}
+          y={0}
+          width={SCREEN_WIDTH}
+          height={SCREEN_HEIGHT}
+          fit="cover"
+          image={image}
+        />
+      </Group>
+      <Group
+        opacity={opacityImage}
+        transform={transformBottom}
+        clip={rect(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2)}>
+        <Image
+          x={0}
+          y={0}
+          width={SCREEN_WIDTH}
+          height={SCREEN_HEIGHT}
+          fit="cover"
+          image={image}
+        />
+      </Group>
+      <Rect
+        opacity={opacityBackdrop}
+        color={'rgba(0,0,0,.2)'}
+        x={0}
+        y={0}
+        width={SCREEN_WIDTH}
+        height={SCREEN_HEIGHT}
+      />
+    </Group>
   );
 };

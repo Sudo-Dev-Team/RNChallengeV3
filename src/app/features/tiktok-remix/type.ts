@@ -1,4 +1,5 @@
-import { SharedValue } from 'react-native-reanimated';
+import {SkImage} from '@shopify/react-native-skia';
+import {SharedValue} from 'react-native-reanimated';
 
 export type TiktokRemixProps = {
   scaleMask: SharedValue<number>;
@@ -6,8 +7,14 @@ export type TiktokRemixProps = {
 };
 export type OverlayMaskProps = {
   scaleMask: SharedValue<number>;
+  image: SkImage;
 };
 
 export type OriginImageProps = {
   progress: SharedValue<number>;
+  image: SkImage;
+};
+
+export type MaskViewProps = {
+  image: SkImage;
 };
