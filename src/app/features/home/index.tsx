@@ -117,6 +117,10 @@ export const Home = () => {
         text="Gesture Function"
         onPress={handleNavigate(APP_SCREEN.GESTURE_FUNCTION)}
       />
+      <ItemFunction
+        text="Crop Image"
+        onPress={handleNavigate(APP_SCREEN.CROP_IMAGE)}
+      />
       <View style={{height: bottom + 10}} />
     </ScrollView>
   );

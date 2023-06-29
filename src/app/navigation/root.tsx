@@ -33,6 +33,8 @@ import Splash from 'react-native-bootsplash';
 import {DotsAnimation} from '../features/dots-animation';
 import {LineGraph} from '../features/line-graph';
 import {GestureFunction} from '../features/gesture-function';
+import {CropImage} from '../features/crop-image';
+import {CropImageResult} from '../features/crop-image-result';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -190,6 +192,20 @@ export const RootNavigation = () => {
           options={{title: 'Gesture Function', gestureEnabled: false}}
           name={APP_SCREEN.GESTURE_FUNCTION}
           component={GestureFunction}
+        />
+        <RootStack.Screen
+          options={{title: 'Crop Image', gestureEnabled: false}}
+          name={APP_SCREEN.CROP_IMAGE}
+          component={CropImage}
+        />
+        <RootStack.Screen
+          options={{
+            title: 'Crop Image Result',
+            gestureEnabled: false,
+            ...TransitionPresets.ModalPresentationIOS,
+          }}
+          name={APP_SCREEN.CROP_IMAGE_RESULT}
+          component={CropImageResult}
         />
       </RootStack.Navigator>
     </NavigationContainer>

@@ -91,3 +91,7 @@
 ## Gesture Function
 
 <image src="./preview/gesture_function.gif"/>
+
+## Crop Image
+
+<image src="./preview/crop_image.gif"/>

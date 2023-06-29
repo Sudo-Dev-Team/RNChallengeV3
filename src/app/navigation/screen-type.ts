@@ -1,3 +1,6 @@
+import {SkImage} from '@shopify/react-native-skia';
+import {StackScreenProps as RNStackScreenProps} from '@react-navigation/stack';
+
 export enum APP_SCREEN {
   HOME = 'HOME',
   CARD_ROTATE = 'CARD_ROTATE',
@@ -24,6 +27,8 @@ export enum APP_SCREEN {
   DOTS_ANIMATION = 'DOTS_ANIMATION',
   LINE_GRAPH = 'LINE_GRAPH',
   GESTURE_FUNCTION = 'GESTURE_FUNCTION',
+  CROP_IMAGE = 'CROP_IMAGE',
+  CROP_IMAGE_RESULT = 'CROP_IMAGE_RESULT',
 }
 
 export type RootStackParamList = {
@@ -52,4 +57,12 @@ export type RootStackParamList = {
   [APP_SCREEN.DOTS_ANIMATION]: undefined;
   [APP_SCREEN.LINE_GRAPH]: undefined;
   [APP_SCREEN.GESTURE_FUNCTION]: undefined;
+  [APP_SCREEN.CROP_IMAGE_RESULT]: {
+    image: SkImage;
+    width: number;
+    height: number;
+  };
+  [APP_SCREEN.CROP_IMAGE]: undefined;
 };
+export type StackScreenProps<T extends keyof RootStackParamList> =
+  RNStackScreenProps<RootStackParamList, T>;
